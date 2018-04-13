@@ -10,15 +10,6 @@
 #include "testcls.h"*/
 #include "NTemplate/NTemplateImp.h"
 #include "NTemplate/NAsync.h"
-//#include "NTemplate/NAsyncStd.h"
-//using namespace v8;
-//using namespace _T;
-// npm install node-gyp -g
-// npm install --global --production windows-build-tools
-//npm install --global node-gyp
-// node-gyp configure
-//node-gyp build
-//node-gyp rebuild
 void RegisterModule(v8::Handle<v8::Object> target) {
 	NODE_SET_METHOD(target, "parseScript", NTEMPLATE_PARSE_SCRIPT);
 	NODE_SET_METHOD(target, "runScript", NTEMPLATE_RUN_SCRIPT);
