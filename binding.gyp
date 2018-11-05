@@ -3,16 +3,16 @@
     {
       "target_name": "NTemplate",
       "sources": [
-        "NTemplate/stringx.h",
-        "NTemplate/stder.h",
-        "NTemplate/dependancy.h",
-        "NTemplate/narg.h",
-        "NTemplate/narg.cpp",
-        "NTemplate/compiler.h",
-        "NTemplate/compiler.cpp",
-        "NTemplate/asyncdep.h",
-        "NTemplate/async.h",
-        "NTemplate/async.cpp",
+        "src/stringx.h",
+        "src/stder.h",
+        "src/dependancy.h",
+        "src/narg.h",
+        "src/narg.cpp",
+        "src/compiler.h",
+        "src/compiler.cpp",
+        "src/asyncdep.h",
+        "src/async.h",
+        "src/async.cpp",
         "NTemplate.cc"
       ],
 	  "msvs_settings": {
