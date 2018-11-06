@@ -3,17 +3,13 @@
     {
       "target_name": "NTemplate",
       "sources": [
-        "src/stringx.h",
-        "src/stder.h",
-        "src/dependancy.h",
-        "src/narg.h",
         "src/narg.cpp",
-        "src/compiler.h",
+        "src/result.cpp",
         "src/compiler.cpp",
-        "src/asyncdep.h",
-        "src/async.h",
+        "src/ntemplate.cpp",
         "src/async.cpp",
-        "NTemplate.cc"
+        "src/ntemplateimp.cpp",
+        "TemplateParser.cc"
       ],
 	  "msvs_settings": {
         "VCCLCompilerTool": {
