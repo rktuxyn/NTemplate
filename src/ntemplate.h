@@ -1,7 +1,5 @@
 //1:11 AM 11/4/2018
-#if defined(_MSC_VER)
-#  pragma once
-#endif
+#pragma once
 #ifndef NTEMPLATE_H_
 #define NTEMPLATE_H_
 #ifndef NTEMPLATE_DEP_
@@ -20,15 +18,15 @@ namespace NTemplate {
 		stringx attachPattern;
 		std::regex attachRegx;
 		TemplateResult* reader_result;
-		inline char* ReadFile(const char*& name);
-		inline void Read(stringx path);
-		inline void DeepRead(stringx &path, stringx &data);
+		char* ReadFile(const char*& name);
+		void Read(stringx path);
+		void DeepRead(stringx &path, stringx &data);
 	public:
-		inline TemplateReader();
-		inline ~TemplateReader();
-		inline TemplateResult* Read(stringx rootTemplate, const char* rootPath, stringx rootDir);
-		inline void Add(std::string _data);
-		friend class TemplatParser;
+		TemplateReader();
+		~TemplateReader();
+		TemplateResult* Read(stringx rootTemplate, const char* rootPath, stringx rootDir);
+		void Add(std::string _data);
+		friend class TemplateParser;
 	};
 #pragma endregion
 #pragma region SCRIPTPARSER
@@ -42,8 +40,8 @@ namespace NTemplate {
 				rte/*rte*/ = "=js>"//= "=>"// = "=>"
 				;
 		};
-		inline ~JavaScriptParser();
-		inline stringx ParseScript(stringx templateStr);
+		~JavaScriptParser();
+		stringx ParseScript(stringx templateStr);
 
 	private:
 		std::regex regxSts;
@@ -64,15 +62,15 @@ namespace NTemplate {
 			bool isTagStart, isTagEnd, isLastTag;
 			ETag etag;
 		};
-		inline void startTag(std::regex regx, Result* info);
-		inline void endTag(std::regex regx, Result* info);
+		void startTag(std::regex regx, Result* info);
+		void endTag(std::regex regx, Result* info);
 	public:
-		inline JavaScriptParser();
-		friend class TemplatParser;
+		JavaScriptParser();
+		friend class TemplateParser;
 	};
 #pragma endregion
-#pragma region TemplatParser
-	class TemplatParser : public JavaScriptParser,
+#pragma region TemplateParser
+	class TemplateParser : public JavaScriptParser,
 		public TemplateReader {
 	private:
 		const char* view_path;
@@ -87,16 +85,16 @@ namespace NTemplate {
 		bool hasError;
 		stringx errorMsg;
 		bool isScriptTemplate;
-		inline TemplatParser(const char* v, std::string& dir);
-		inline ~TemplatParser();
-		inline TemplateResult* Start();
-		inline void getSetTemplate(stringx str, v8::Isolate* isolate);
-		inline void margeTemplate();
-		inline std::map<stringx, stringx> extendPlaceholder(std::map<stringx, stringx> extendId, std::map<int, stringx> match);
-		inline stringx overlapTemplate(stringx& mainBody, std::list<stringx> ml, stringx& body);
-		inline stringx nonImplementPlaceholder();
-		inline void implimantAttachment();
-		inline std::list<stringx> getMatchList(stringx str, std::regex rgx);
+		TemplateParser(const char* v, stringx& dir);
+		 ~TemplateParser();
+		void Start(TemplateResult* tr);
+		void getSetTemplate(stringx str, v8::Isolate* isolate);
+		void margeTemplate();
+		void extendPlaceholder(std::map<std::string, stringx>&extendId, std::map<int, stringx>&match);
+		stringx overlapTemplate(stringx& mainBody, std::list<stringx> ml, stringx& body);
+		stringx nonImplementPlaceholder();
+		void implimantAttachment();
+		std::list<stringx> getMatchList(stringx str, std::regex rgx);
 		stringx _overlapTemplate(stringx& mainBody, std::list<stringx> ml, stringx& body);
 		//friend class JavaScriptParser;
 		//friend class TemplateReader;

@@ -5,9 +5,7 @@
 * See the accompanying LICENSE file for terms.
 */
 //11:17 PM 10/30/2018
-#if defined(_MSC_VER)
-#  pragma once
-#endif
+#pragma once
 #ifndef _XSTRING_
 #include <string>
 #endif // !_XSTRING_
@@ -26,13 +24,18 @@ private:
 	bool _isDisposed;
 	Type *pData;
 public:
-	Stringx(const Type &t) {
-		pData = new Type(t);
+	Stringx(const Type &_Ptr) {
+		pData = new Type(_Ptr);
 		malloc(sizeof(pData));
 		_isDisposed = false;
 	};
-	Stringx(Type *p) {
-		if (p) { pData = new Type(p); malloc(sizeof(pData)); }
+	/**Stringx(const char* _Ptr) {
+		pData = new Type(_Ptr);
+		malloc(sizeof(pData));
+		_isDisposed = false;
+	};*/
+	Stringx(Type *_Ptr) {
+		if (_Ptr) { pData = new Type(_Ptr); malloc(sizeof(pData)); }
 		else { pData = NULL; }
 	};
 	Stringx() { pData = new Type(); malloc(sizeof(pData)); };
@@ -148,7 +151,7 @@ public:
 			pData = new Type();
 			_isDisposed = false;
 		}
-		pData->operator+=(_Off.pData->c_str());
+		pData->append(_Off);
 		return (*this);
 	};
 
@@ -157,7 +160,7 @@ public:
 			pData = new Type();
 			_isDisposed = false;
 		}
-		return pData->operator+(_Off);
+		return pData->append(_Off);
 	};
 
 	Type& operator+=(const char _Off) {
@@ -165,7 +168,7 @@ public:
 			pData = new Type();
 			_isDisposed = false;
 		}
-		return pData->operator+=(_Off);
+		return pData->append(_Off);
 	};
 
 	Type& operator+=(Type _Off) {
@@ -173,39 +176,50 @@ public:
 			pData = new Type();
 			_isDisposed = false;
 		}
-		return pData->operator+=(_Off);
+		return pData->append(_Off);
 	};
 
-	inline bool operator==(const Type &_Right)const {
+	bool operator==(const Type &_Right)const {
 		// test for iterator equality
 		if (_isDisposed) throw "Object Disposed...";
 		return pData->_Equal(_Right);
 	};
 
-	inline bool operator!=(const Type &_Right)const {
+	bool operator!=(const Type &_Right)const {
 		if (_isDisposed) throw "Object Disposed...";
 		return (!(pData->compare(_Right)));
 	};
-
-	inline bool operator<(const Type& _Right) const {	// test if this < _Right
+	bool operator!=(const Stringx &_Right)const {
 		if (_isDisposed) throw "Object Disposed...";
-		return pData->compare(_Right) < 0;
+		return (!(pData->compare(_Right.pData)));
+	};
+	int operator++(const int itr)const {
+		if (_isDisposed) throw "Object Disposed...";
+		return 0;
+	};
+	/*bool operator<(const Type& _Right) const {	// test if this < _Right
+		if (_isDisposed) throw "Object Disposed...";
+		//return (pData->compare(_Right)) < 0;
+		return false;
 	};
 
-	inline bool operator>(const Type& _Right) const {	// test if this > _Right
+	bool operator>(const Type& _Right) const {	// test if this > _Right
 		if (_isDisposed) throw "Object Disposed...";
-		return pData->operator>(_Right) == true;
+		//return (pData->compare(_Right)) > 0;
+		return false;
 	};
 
-	inline bool operator<=(const Type& _Right) const {	// test if this <= _Right
+	bool operator<=(const Type& _Right) const {	// test if this <= _Right
 		if (_isDisposed) throw "Object Disposed...";
-		return pData->compare(_Right) <= 0;
+		//return (pData->compare(_Right)) <= 0;
+		return false;
 	};
 
-	inline bool operator>=(const Type& _Right) const {
+	bool operator>=(const Type& _Right) const {
 		if (_isDisposed) throw "Object Disposed...";
-		return pData->compare(_Right) >= 0;
-	};
+		//return (pData->compare(_Right)) >= 0;
+		return false;
+	};*/
 
 protected:
 	//

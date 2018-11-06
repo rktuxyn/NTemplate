@@ -1,6 +1,4 @@
-#if defined(_MSC_VER)
-#  pragma once
-#endif
+#pragma once
 #ifndef STD_EXTEND_REGEX
 #define STD_EXTEND_REGEX
 #ifndef _IOSTREAM_
@@ -39,23 +37,23 @@ _STD_BEGIN
 		class Traits,
 		class CharT,
 		class UnaryFunction>
-		_STD basic_string<CharT> 
+		std:: basic_string<CharT> 
 		__regex_replacematch(BidirIt first, BidirIt last,
-			const _STD basic_regex<CharT, Traits>& re,
+			const std::basic_regex<CharT, Traits>& re,
 			UnaryFunction f, size_t count = 0
 		) {
-		_STD basic_string<CharT> str;
+	std::basic_string<CharT> str;
 		{
-			typename _STD match_results<BidirIt>::difference_type
+			typename std::match_results<BidirIt>::difference_type
 				positionOfLastMatch = 0;
 			auto endOfLastMatch = first;
 			size_t increment = 0;
-			_STD sregex_iterator begin(first, last, re), end;
-			_STD all_of(begin, end, [&](const _STD match_results<BidirIt>& match) {
+			std::sregex_iterator begin(first, last, re), end;
+			std::all_of(begin, end, [&](const _STD match_results<BidirIt>& match) {
 				auto positionOfThisMatch = match.position(0);
 				auto diff = positionOfThisMatch - positionOfLastMatch;
 				auto startOfThisMatch = endOfLastMatch;
-				_STD advance(startOfThisMatch, diff);
+				std::advance(startOfThisMatch, diff);
 				str.append(endOfLastMatch, startOfThisMatch);
 				str.append(f(match));
 				auto lengthOfMatch = match.length(0);
@@ -67,7 +65,7 @@ _STD_BEGIN
 						return false;
 					}
 				}
-				_STD advance(endOfLastMatch, lengthOfMatch);
+				std::advance(endOfLastMatch, lengthOfMatch);
 				return true;
 			});
 			str.append(endOfLastMatch, last);
@@ -78,18 +76,18 @@ _STD_BEGIN
 		class Traits,
 		class CharT,
 		class UnaryFunction>
-		_STD basic_string<CharT>
+		std::basic_string<CharT>
 		__regex_core(BidirIt first, BidirIt last,
-			const _STD basic_regex<CharT, Traits>& re,
+			const std::basic_regex<CharT, Traits>& re,
 			UnaryFunction f, size_t count = 0
 		) {
-		_STD basic_string<CharT> str;
+		std::basic_string<CharT> str;
 		{
-			_STD sregex_iterator next(first, last, re);
-			_STD sregex_iterator end;
+			std::sregex_iterator next(first, last, re);
+			std::sregex_iterator end;
 			size_t increment = 0;
 			while (next != end) {
-				_STD smatch match = *next;
+				std::smatch match = *next;
 				str.append(f(match));
 				if (count != 0) {
 					increment++;
@@ -105,9 +103,9 @@ _STD_BEGIN
 	template<class Traits,
 		class CharT,
 		class UnaryFunction>
-		_STD basic_string<CharT>
-		regex__replacematch(const _STD basic_string<CharT>& s,
-			const _STD basic_regex<CharT, Traits>& re, 
+		std::basic_string<CharT>
+		regex__replacematch(const std::basic_string<CharT>& s,
+			const std::basic_regex<CharT, Traits>& re,
 			UnaryFunction f, size_t count = 0
 		) {
 		return __regex_replacematch(s.cbegin(), s.cend(), re, f, count);
@@ -115,31 +113,31 @@ _STD_BEGIN
 #define REGEX_REPLACE_MATCH regex__replacematch
 	template<class Traits,
 		class CharT>
-		_STD basic_string<CharT>
-		regex__matchstr(const _STD basic_string<CharT>& str,
-			const _STD basic_regex<CharT, Traits>& re
+		std::basic_string<CharT>
+		regex__matchstr(const std::basic_string<CharT>& str,
+			const std::basic_regex<CharT, Traits>& re
 		) {
-		auto& tmp = _STD basic_string<CharT>("INVALID");
+		auto& tmp = std::basic_string<CharT>("INVALID");
 		__regex_replacematch(str.cbegin(), str.cend(), re, [&tmp](const _STD smatch& m) {
 			tmp = m.str(1);
-			return _STD basic_string<CharT>("___NOP___");
+			return std::basic_string<CharT>("___NOP___");
 		}, 1);
 		return tmp;
 	}
 #define REGEX_MATCH_STR regex__matchstr
 	template<class Traits,
 		class CharT>
-		_STD list<stringx>
-		regex__matchlist(const _STD basic_string<CharT>& str,
-			const _STD basic_regex<CharT, Traits>& re
+		std::list<stringx>
+		regex__matchlist(const std::basic_string<CharT>& str,
+			const std::basic_regex<CharT, Traits>& re
 		) {
-		_STD list<stringx> result;
+		std::list<stringx> result;
 		{
 			if (str.empty())return result;
-			_STD sregex_iterator next(str.begin(), str.end(), re);
-			_STD sregex_iterator end;
+			std::sregex_iterator next(str.begin(), str.end(), re);
+			std::sregex_iterator end;
 			while (next != end) {
-				_STD smatch match = *next;
+				std::smatch match = *next;
 				result.push_back(match.str());
 				next++;
 			}
@@ -150,16 +148,16 @@ _STD_BEGIN
 /**============================================================================*/
 	template<class Traits,
 		class CharT, class BidirIt>
-		_STD list<stringx>
+		std::list<stringx>
 		regex__match_list(BidirIt irFirst, BidirIt irLast,
-			const _STD basic_regex<CharT, Traits>& re
+			const std::basic_regex<CharT, Traits>& re
 		) {
-		_STD list<stringx> result;
+		std::list<stringx> result;
 		{
-			_STD sregex_iterator next(irFirst, irLast, re);
-			_STD sregex_iterator end;
+			std::sregex_iterator next(irFirst, irLast, re);
+			std::sregex_iterator end;
 			while (next != end) {
-				_STD smatch match = *next;
+				std::smatch match = *next;
 				result.push_back(match.str());
 				next++;
 			}
@@ -170,21 +168,21 @@ _STD_BEGIN
 /*=============================================================================*/
 	template<class Traits,
 		class CharT>
-		_STD basic_string<CharT> 
-		regex__matchstrreplaceall(const _STD basic_string<CharT>& str,
-			const _STD basic_regex<CharT, Traits>& re, _STD string repstr
+		std::basic_string<CharT>
+		regex__matchstrreplaceall(const std::basic_string<CharT>& str,
+			const std::basic_regex<CharT, Traits>& re, std::string repstr
 		) {
-		return _STD regex_replace(str, re, repstr);
+		return std::regex_replace(str, re, repstr);
 	}
 #define REGEX_REPLACE_ALL regex__matchstrreplaceall
 /*================================================*/
 	template<class Traits,
 		class CharT, class DataRefStr>
-		_STD basic_string<CharT>
+		std::basic_string<CharT>
 		regex__match_str_replace_all(DataRefStr& str,
-			const _STD basic_regex<CharT, Traits>& re, _STD string repstr
+			const std::basic_regex<CharT, Traits>& re, _STD string repstr
 		) {
-		return _STD regex_replace(str, re, repstr);
+		return std::regex_replace(str, re, repstr);
 	}
 #define REGEX_REPLACE_ALL_N regex__match_str_replace_all
 /*=================================================*/
@@ -192,11 +190,11 @@ _STD_BEGIN
 		class Traits, class CharT>
 		size_t 
 		__regex_ismatch(BidirIt first, BidirIt last,
-			const _STD basic_regex<CharT, Traits>& re
+			const std::basic_regex<CharT, Traits>& re
 		) {
 		size_t increment = 0;
-		_STD sregex_iterator begin(first, last, re), end;
-		_STD all_of(begin, end, [&](const _STD match_results<BidirIt>& match) {
+		std::sregex_iterator begin(first, last, re), end;
+		std::all_of(begin, end, [&](const std::match_results<BidirIt>& match) {
 			increment++;
 			return false;
 		});
@@ -205,17 +203,17 @@ _STD_BEGIN
 	template<class Traits, 
 		class CharT>
 	size_t 
-		regex__ismatch(const _STD basic_string<CharT>& str,
-		const _STD basic_regex<CharT, Traits>& re
+		regex__ismatch(const std::basic_string<CharT>& str,
+		const std::basic_regex<CharT, Traits>& re
 		) {
 		size_t count = 0;
 		{
 			//if (str == NULL)return 0;
 			if (str.empty())return count;
 			//return __regex_ismatch(str.cbegin(), str.cend(), re);
-			_STD sregex_iterator next(str.begin(), str.end(), re);
+			std::sregex_iterator next(str.begin(), str.end(), re);
 			//_STD sregex_iterator end;
-			_STD sregex_iterator end;
+			std::sregex_iterator end;
 
 			while (next != end) {
 				count++;
@@ -232,12 +230,12 @@ _STD_BEGIN
 		class CharT, class BidirIt>
 	size_t
 		regex__is_match(BidirIt irFirst, BidirIt irLast,
-			const _STD basic_regex<CharT, Traits>& re
+			const std::basic_regex<CharT, Traits>& re
 		) {
 		size_t count = 0;
 		{
-			_STD sregex_iterator next(irFirst, irLast, re);
-			_STD sregex_iterator end;
+			std::sregex_iterator next(irFirst, irLast, re);
+			std::sregex_iterator end;
 			while (next != end) {
 				count++;
 				break;
@@ -250,7 +248,7 @@ _STD_BEGIN
 /*=================================================*/
 	template<class CharT>
 	stringx 
-		_trim(_STD basic_string<CharT>& str) {
+		_trim(std::basic_string<CharT>& str) {
 		if (str.empty())return str;
 		size_t first = str.find_first_not_of(' ');
 		size_t last = str.find_last_not_of(' ');
@@ -259,7 +257,7 @@ _STD_BEGIN
 #define STR_TRIM _trim
 /**=================================================*/
 	template<class DataRefStr>
-	_STD string
+	std::string
 		_trim_n(DataRefStr str) {
 		if (str->empty())return str;
 		size_t first = str->find_first_not_of(' ');
@@ -270,35 +268,35 @@ _STD_BEGIN
 /**=================================================*/
 	template<class Traits,
 		class CharT>
-	_STD map<int, stringx>
-		_map_split(_STD basic_string<CharT>& str, 
-			const _STD basic_regex<CharT, Traits>& rgx
+		std::map<int, stringx>
+		_map_split(std::basic_string<CharT>& str,
+			const std::basic_regex<CharT, Traits>& rgx
 		) {
-		_STD map<int, stringx> result;
+		std::map<int, stringx> result;
 		{
 			if (str.empty())return result;
 			int count = 0;
-			_STD sregex_token_iterator iter(str.begin(), str.end(), rgx, -1);
-			for (_STD sregex_token_iterator end; iter != end; ++iter) {
+			std::sregex_token_iterator iter(str.begin(), str.end(), rgx, -1);
+			for (std::sregex_token_iterator end; iter != end; ++iter) {
 				result[count] = iter->str();
 				count++;
 			}
 		}
 		return result;
-	}
+	};
 #define STR_MAP_SPLIT _map_split
 /**=====================================================*/
 	template<class Traits,
 		class CharT, class BidirIt>
-		_STD map<int, stringx>
+		std::map<int, stringx>
 		_map_split_n(BidirIt irFirst, BidirIt irLast,
-			const _STD basic_regex<CharT, Traits>& rgx
+			const std::basic_regex<CharT, Traits>& rgx
 		) {
-		_STD map<int, stringx> result;
+		std::map<int, stringx> result;
 		{
 			int count = 0;
-			_STD sregex_token_iterator iter(irFirst, irLast, rgx, -1);
-			for (_STD sregex_token_iterator end; iter != end; ++iter) {
+			std::sregex_token_iterator iter(irFirst, irLast, rgx, -1);
+			for (std::sregex_token_iterator end; iter != end; ++iter) {
 				result[count] = iter->str();
 				count++;
 			}
@@ -308,9 +306,9 @@ _STD_BEGIN
 #define STR_MAP_SPLIT_N _map_split_n
 /**=====================================================*/
 	template<class CharT>
-	_STD basic_string<CharT> 
-		_split(_STD basic_string<CharT> str, 
-		const _STD basic_string<CharT>& delimiter
+	std::basic_string<CharT>
+		_split(std::basic_string<CharT> str,
+		const std::basic_string<CharT>& delimiter
 	) {
 		if (str.empty())return str;
 
@@ -319,9 +317,9 @@ _STD_BEGIN
 #define STR_SPLIT _split
 /**======================================================*/
 	template<class DataRefStr>
-	_STD string
+	std::string
 		_split_n(DataRefStr str,
-			const _STD string& delimiter
+			const std::string& delimiter
 		) {
 		return str->substr(0, str->find(delimiter));
 	}

@@ -1,16 +1,14 @@
-#if defined(_MSC_VER)
-#  pragma once
-#endif
+#pragma once
 #ifndef NTEMPLATE_ASYNC_DEP_
 #define NTEMPLATE_ASYNC_DEP_
 #ifndef NTEMPLATE_DEP_
 #include "dependancy.h"
 #endif //!NTEMPLATE_DEP_
 #ifndef NTEMPLATE_ARG_
-#include "NArguments.h"
+#include "narg.h"
 #endif //!NTEMPLATE_ARG_
 #ifndef NTEMPLATE_COMP_
-#include "NCompiler.h"
+#include "compiler.h"
 #endif //!NTEMPLATE_COMP_
 #ifndef _CHRONO_
 #include <chrono>

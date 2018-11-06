@@ -1,7 +1,5 @@
 //11:15 PM 11/4/2018
-#if defined(_MSC_VER)
-#  pragma once
-#endif
+#pragma once
 #include "ntemplate.h"
 using namespace NTemplate;
 #pragma region TEMPLATEREADER
@@ -23,8 +21,7 @@ TemplateReader::~TemplateReader() {
 	delete this->reader_result;
 	return;
 };
-inline char*
-TemplateReader::ReadFile(const char*& name) {
+char* TemplateReader::ReadFile(const char*& name) {
 	char* chars = "INVALID";
 #if _HAS_EXCEPTIONS
 	try {
@@ -58,14 +55,12 @@ TemplateReader::ReadFile(const char*& name) {
 #endif
 	return chars;
 };
-inline void
-TemplateReader::Add(std::string _data) {
+void TemplateReader::Add(std::string _data) {
 	this->_templdct[this->_count] = _data; _data.clear();
 	this->_count++;
 	return;
 };
-inline void
-TemplateReader::DeepRead(stringx &_path, stringx &data) {
+void TemplateReader::DeepRead(stringx &_path, stringx &data) {
 	if (data->empty()) {
 		stringx relativePath = stringx(this->_rootDir + "\\" + _path);
 		const char* dir = relativePath->c_str();
@@ -108,8 +103,7 @@ TemplateReader::DeepRead(stringx &_path, stringx &data) {
 	this->DeepRead(nextTemplate, stringx());
 
 };
-inline void
-TemplateReader::Read(stringx path) {
+void TemplateReader::Read(stringx path) {
 	stringx relativePath = this->_rootDir + "\\" + path;
 	const char* dir = relativePath->c_str();
 	const char* result;
@@ -130,8 +124,7 @@ TemplateReader::Read(stringx path) {
 	this->Read(nextTemplate);
 	return;
 };
-inline TemplateResult*
-TemplateReader::Read(stringx rootTemplate, const char* rootPath, stringx rootDir) {
+TemplateResult* TemplateReader::Read(stringx rootTemplate, const char* rootPath, stringx rootDir) {
 	//this->DeepRead(std::string(), rootTemplate);
 	std::string nextTemplate = REGEX_MATCH_STR(rootTemplate.get_Data(), this->patternRegx);
 
@@ -154,7 +147,7 @@ TemplateReader::Read(stringx rootTemplate, const char* rootPath, stringx rootDir
 * [JAVASCRIPT PARSER IMPLEMENT]
 ***/
 JavaScriptParser::~JavaScriptParser() {};
-inline 
+
 JavaScriptParser::JavaScriptParser() {
 	Tag *tags = new Tag();
 	this->regxSts = std::regex("\\" + tags->sts);
@@ -165,8 +158,7 @@ JavaScriptParser::JavaScriptParser() {
 	this->repStrRegex = std::regex(this->repStr.get_Data());
 	this->resultKey = "__N_OUT_PUT_RESULT__";
 };
-inline void
-JavaScriptParser::startTag(std::regex regx, JavaScriptParser::Result* info) {
+void JavaScriptParser::startTag(std::regex regx, JavaScriptParser::Result* info) {
 	if (REGEX_IS_MATCH(info->line.get_Data(), regx) == 0) {
 		if (info->isTagEnd) {
 			info->line = info->line += " " + this->repStr.get_Data() + "; " + this->resultKey.get_Data() + " += " + this->repStr.get_Data();
@@ -220,8 +212,7 @@ JavaScriptParser::startTag(std::regex regx, JavaScriptParser::Result* info) {
 	}
 	return;
 };
-inline void
-JavaScriptParser::endTag(std::regex regx, JavaScriptParser::Result* info) {
+void JavaScriptParser::endTag(std::regex regx, JavaScriptParser::Result* info) {
 	//stringx line = info->line;
 	//stringx tag = info->tag;
 	if (info->isTagStart == false && info->isTagEnd == true) {
@@ -251,8 +242,7 @@ JavaScriptParser::endTag(std::regex regx, JavaScriptParser::Result* info) {
 	}
 	return;
 };
-inline stringx
-JavaScriptParser::ParseScript(stringx templateStr) {
+stringx JavaScriptParser::ParseScript(stringx templateStr) {
 	//!TODO
 	JavaScriptParser::Result* info = new JavaScriptParser::Result();
 	stringx out = "/** ** [START CLIENT SCRIPT]** **/\r\n/** ** [START STRIPE-1]** **/ \r\n";
@@ -303,9 +293,8 @@ JavaScriptParser::ParseScript(stringx templateStr) {
 * [/JAVASCRIPT PARSER IMPLEMENT]
 ***/
 #pragma endregion
-#pragma region TemplatParser
-inline 
-TemplatParser::TemplatParser(const char* v, std::string& dir) {
+#pragma region TemplateParser
+TemplateParser::TemplateParser(const char* v, stringx& dir) {
 	this->view_path = v; this->root_dir = dir;
 	this->hasError = false;
 	this->isScriptTemplate = false;
@@ -316,8 +305,8 @@ TemplatParser::TemplatParser(const char* v, std::string& dir) {
 	this->_parent = std::string(v);
 	return;
 };
-inline 
-TemplatParser::~TemplatParser() {
+
+TemplateParser::~TemplateParser() {
 	this->outStr.dispose();
 	this->root_dir.dispose();
 	this->outResult.dispose();
@@ -328,8 +317,7 @@ TemplatParser::~TemplatParser() {
 /***
 * [TEMPLATE PARSER IMPLEMENT]
 ***/
-inline std::list<stringx>
-TemplatParser::getMatchList(stringx str, std::regex rgx) {
+std::list<stringx>TemplateParser::getMatchList(stringx str, std::regex rgx) {
 	std::list<stringx> result;
 #if _HAS_EXCEPTIONS
 	try {
@@ -343,34 +331,30 @@ TemplatParser::getMatchList(stringx str, std::regex rgx) {
 	}
 #endif
 	return result;
-}
-inline void
-TemplatParser::getSetTemplate(stringx str, v8::Isolate* isolate) {
+};
+void TemplateParser::getSetTemplate(stringx str, v8::Isolate* isolate) {
 	if (str == "INVALID") {
 		this->outResult = "NOT FOUND!!!";
 		return;
 	}
 	this->outResult = str;
-}
-inline std::map<stringx, stringx>
-TemplatParser::extendPlaceholder(std::map<stringx, stringx> extendId, std::map<int, stringx> match) {
+};
+void TemplateParser::extendPlaceholder(std::map<std::string, stringx>&extendId, std::map<int, stringx>&match) {
 	std::string key;
-	//std::string* key = NEW_STAR();
-	std::regex re = std::regex(this->regx);
+	//std::regex re = std::regex(this->regx);
 	for (auto itr = match.begin(); itr != match.end(); itr++) {
-		key = REGEX_MATCH_STR(itr->second.get_Data(), re);
+		key = REGEX_MATCH_STR(itr->second.get_Data(), this->regx);
 		if (key == "INVALID" || key.empty()) {
 			continue;
 		}
 		extendId[key] = key;
 	}
-	return extendId;
-}
-inline stringx
-TemplatParser::_overlapTemplate(stringx& mainBody, std::list<stringx> ml, stringx& body) {
+	return;
+};
+stringx TemplateParser::_overlapTemplate(stringx& mainBody, std::list<stringx> ml, stringx& body) {
 	if (mainBody->empty())return "";
-	std::map<stringx, stringx> extendId;
-	extendId[stringx("__DEMO__")] = "__DEMO__";
+	std::map<std::string, stringx> extendId;
+	extendId["__DEMO__"] = "__DEMO__";
 	body = REGEX_REPLACE_ALL(body.get_Data(), std::regex("(?:\\r\\n)"), this->repStr.get_Data());
 	stringx sk;
 	stringx brgx;
@@ -426,23 +410,22 @@ TemplatParser::_overlapTemplate(stringx& mainBody, std::list<stringx> ml, string
 			p = STR_SPLIT(first.get_Data(), this->endTag.get_Data());
 		}
 		else {
-			extendId = this->extendPlaceholder(extendId, match);
+			this->extendPlaceholder(extendId, match);
 		}
 		p = REGEX_REPLACE_ALL(p.get_Data(), this->repStrRegex, "\r\n");//Back to Multiple Line
 		mainBody = REGEX_REPLACE_ALL(mainBody.get_Data(), std::regex(sk.get_Data()), p.get_Data());
 
 	}
 	sk.dispose(); brgx.dispose(); p.dispose(); first.dispose();
-	std::map<stringx, stringx>().swap(extendId);
+	std::map<std::string, stringx>().swap(extendId);
 	return mainBody;
-}
-inline stringx
-TemplatParser::overlapTemplate(stringx& mainBody, std::list<stringx> ml, stringx& body) {
+};
+stringx TemplateParser::overlapTemplate(stringx& mainBody, std::list<stringx> ml, stringx& body) {
 #if _HAS_EXCEPTIONS
 	try {
 #endif
-		std::map<stringx, stringx> extendId;
-		extendId[stringx("__DEMO__")] = "__DEMO__";
+		std::map<std::string, stringx> extendId;
+		extendId["__DEMO__"] = "__DEMO__";
 		body = REGEX_REPLACE_ALL(body.get_Data(), std::regex("(?:\\r\\n)"), this->repStr.get_Data());//Make Single Line
 		stringx sk;
 		stringx brgx;
@@ -497,7 +480,7 @@ TemplatParser::overlapTemplate(stringx& mainBody, std::list<stringx> ml, stringx
 				p = STR_SPLIT(first.get_Data(), this->endTag.get_Data());
 			}
 			else {
-				extendId = this->extendPlaceholder(extendId, match);
+				this->extendPlaceholder(extendId, match);
 			}
 			p = REGEX_REPLACE_ALL(p.get_Data(), this->repStrRegex, "\r\n");//Back to Multiple Line
 			mainBody = REGEX_REPLACE_ALL(mainBody.get_Data(), std::regex(sk.get_Data()), p.get_Data());
@@ -514,8 +497,7 @@ TemplatParser::overlapTemplate(stringx& mainBody, std::list<stringx> ml, stringx
 	}
 #endif//!_HAS_EXCEPTIONS
 }
-inline void
-TemplatParser::margeTemplate() {
+void TemplateParser::margeTemplate() {
 #if _HAS_EXCEPTIONS
 	try {
 #endif
@@ -549,8 +531,7 @@ TemplatParser::margeTemplate() {
 #endif//!_HAS_EXCEPTIONS
 	return;
 }
-inline void
-TemplatParser::implimantAttachment() {
+void TemplateParser::implimantAttachment() {
 	std::list<stringx> rml = this->getMatchList(this->outStr, this->attachRegx);
 	if (rml.size() > 0) {
 		const char* result;
@@ -570,9 +551,8 @@ TemplatParser::implimantAttachment() {
 	}
 	return;
 }
-inline stringx
-TemplatParser::nonImplementPlaceholder() {
-	std::list<stringx> rml = this->getMatchList(this->outStr, this->regx);
+stringx TemplateParser::nonImplementPlaceholder() {
+	/**std::list<stringx> rml = this->getMatchList(this->outStr, this->regx);
 	stringx requiredPlaceholder("__NOP__");
 	if (rml.size() > 0) {
 		requiredPlaceholder = "This following Placeholder were missing to implimant in child:\r\n";
@@ -581,96 +561,15 @@ TemplatParser::nonImplementPlaceholder() {
 		}
 		std::cout << requiredPlaceholder.get_Data() << "\r\n";
 	};
-	std::list<stringx>().swap(rml);
+	std::list<stringx>().swap(rml);*/
 	//return requiredPlaceholder;
 	return "__NOP__";
-}
-inline TemplateResult*
-TemplatParser::Start() {
-	TemplateResult* tr = new TemplateResult();
+};
+void TemplateParser::Start(TemplateResult* tr) {
 	tr->is_error = false;
-#if _HAS_EXCEPTIONS
-	try {
-#endif
-#if TEST_PERFORMANCE //Check PERFORMANCE
-		auto startApps = std::chrono::system_clock::now();
-#endif //!TEST_PERPORMANCE
-#if READ_PERFORMANCE
-		auto bstart = std::chrono::system_clock::now();
-		std::string results = this->ReadS(this->view_path);
-		auto bend = std::chrono::system_clock::now();
-		std::chrono::duration<double> belapsed_seconds = bend - bstart;
-		std::cout << "this->ReadS=>" << belapsed_seconds.count() << "\r\n";
-		auto astart = std::chrono::system_clock::now();
-#endif /* defined(READ_PERFORMANCE) */
-		char* result;
-		result = this->ReadFile(this->view_path);
-#if READ_PERFORMANCE
-		auto aend = std::chrono::system_clock::now();
-		std::chrono::duration<double> aelapsed_seconds = aend - astart;
-		std::cout << "this->ReadFile=>" << aelapsed_seconds.count() << "\r\n";
-#endif /* defined(READ_PERFORMANCE) */
-		if (result == "INVALID") {
-			tr->err_msg = "NOT FOUND!!!";
-			tr->is_error = true;
-			return tr;
-		}
-		stringx& str = static_cast<stringx>(result);
-		delete result;
-		TemplateResult* rr = this->Read(str, this->view_path, this->root_dir);
-		if (rr->is_error) {
-			tr->is_error = true;
-			tr->err_msg = rr->err_msg;
-			return tr;
-		}
-		delete tr;
-		this->margeTemplate();
-		if (this->hasError) {
-			tr->is_error = true;
-			tr->err_msg = this->errorMsg;
-			return tr;
-		}
-		stringx hasError = this->nonImplementPlaceholder();
-		if (hasError != "__NOP__") {
-			this->outStr.dispose();
-			tr->is_error = true;
-			tr->err_msg = hasError;
-			return tr;
-		}
-		this->implimantAttachment();
-		if (this->hasError) {
-			tr->is_error = true;
-			tr->err_msg = this->errorMsg;
-			return tr;
-		}
-		if (REGEX_IS_MATCH(this->outStr.get_Data(), this->regxSts) == 0) {
-			if (REGEX_IS_MATCH(this->outStr.get_Data(), this->regxRts) == 0) {
-				tr->t_source = this->outStr;
-				tr->is_script = false;
-				return tr;
-			}
-		}
-		tr->is_script = true;
-		this->isScriptTemplate = true;
-#if TEST_PERFORMANCE
-		std::string res = this->ParseScript(this->outStr);
-		this->outStr.clear();
-		auto endApps = std::chrono::system_clock::now();
-		std::chrono::duration<double> appselapsed_seconds = endApps - startApps;
-		std::cout << "Taking Time=>" << appselapsed_seconds.count() << "\r\n";
-		return res;
-#endif //!TEST_PERFORMANCE
-		tr->t_source = this->ParseScript(this->outStr);
-		this->outStr.dispose();
-		return tr;
-#if _HAS_EXCEPTIONS
-	} catch (std::exception& e) {
-		tr->is_error = true;
-		tr->err_msg = std::string(e.what());
-		return tr;
-	}
-#endif
-}
+	tr->t_source = "Working!!!";
+};
+
 /***
 * [TEMPLATE PARSER IMPLEMENT]
 ***/

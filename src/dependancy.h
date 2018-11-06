@@ -4,9 +4,7 @@
 * Copyrights licensed under the New BSD License.
 * See the accompanying LICENSE file for terms.
 */
-#if defined(_MSC_VER)
-#  pragma once
-#endif
+#pragma once
 #ifndef NTEMPLATE_DEP_
 #define NTEMPLATE_DEP_
 #ifndef INCLUDE_V8_H_
@@ -122,45 +120,48 @@ _STD map<int, _STD string>().swap(ms)\
 #define DELETE_VER(var)(\
 delete (void*)(&var)\
 )
-#include "result.h"
-_NT_BEGIN
-//Blueprint
-const char* _toCharStr(const _V8 String::Utf8Value& value) {
-	if (value.length() <= 0)return "";
-	return *value ? *value : "<string conversion failed>";
-}
+//#include "result.h"
+namespace NTemplate {
+	//Blueprint
+#ifndef  T_CHAR
+	static const char* _toCharStr(const v8::String::Utf8Value& value);
 #define T_CHAR _toCharStr
-template<class _S>
-void _Destroy(_S* v) {
-	_STD allocator<_S> stringAlloc;
-	stringAlloc.destroy(v);
-};
-#include<stdarg.h>
-stringx xformat(const char *fmt, ...) {
-	va_list args;
-	va_start(args, fmt);
-	stringx str("");
-	while (*fmt != '\0') {
-		if (*fmt != '%') {
-			str += *fmt;
+	const char* _toCharStr(const v8::String::Utf8Value& value) {
+		if (value.length() <= 0)return "";
+		return *value ? *value : "<string conversion failed>";
+	};
+#endif // ! T_CHAR
+	template<class _S>
+	void _Destroy(_S* v) {
+		std::allocator<_S> stringAlloc;
+		stringAlloc.destroy(v);
+	};
+	/**#include<stdarg.h>
+	stringx xformat(const char *fmt, ...) {
+		va_list args;
+		va_start(args, fmt);
+		stringx str("");
+		while (*fmt != '\0') {
+			if (*fmt != '%') {
+				str += *fmt;
+				++fmt;
+				continue;
+			}
+			char * s = va_arg(args, char*);
+			str += s;
 			++fmt;
-			continue;
 		}
-		char * s = va_arg(args, char*);
-		str += s;
-		++fmt;
-	}
-	va_end(args);
-	return str;
+		va_end(args);
+		return str;
+	};*/
+	struct TemplateResult {
+		stringx t_source;
+		stringx err_msg;
+		bool is_error;
+		bool is_script;
+	};
+	class TemplateReader;
+	class TemplateParser;
+	class JavaScriptParser;
 }
-struct TemplateResult {
-	stringx t_source;
-	stringx err_msg;
-	bool is_error;
-	bool is_script;
-};
-class TemplateReader;
-class TemplatParser;
-class JavaScriptParser;
-_NT_END
 #endif //!NTEMPLATE_DEP_
