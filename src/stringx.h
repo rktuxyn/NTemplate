@@ -197,29 +197,25 @@ public:
 		if (_isDisposed) throw "Object Disposed...";
 		return 0;
 	};
-	/*bool operator<(const Type& _Right) const {	// test if this < _Right
+	bool operator<(const Type& _Right) const {	// test if this < _Right
 		if (_isDisposed) throw "Object Disposed...";
-		//return (pData->compare(_Right)) < 0;
-		return false;
+		return (pData->compare(_Right)) < 0;
 	};
 
 	bool operator>(const Type& _Right) const {	// test if this > _Right
 		if (_isDisposed) throw "Object Disposed...";
-		//return (pData->compare(_Right)) > 0;
-		return false;
+		return (pData->compare(_Right)) > 0;
 	};
 
 	bool operator<=(const Type& _Right) const {	// test if this <= _Right
 		if (_isDisposed) throw "Object Disposed...";
-		//return (pData->compare(_Right)) <= 0;
-		return false;
+		return (pData->compare(_Right)) <= 0;
 	};
 
 	bool operator>=(const Type& _Right) const {
 		if (_isDisposed) throw "Object Disposed...";
-		//return (pData->compare(_Right)) >= 0;
-		return false;
-	};*/
+		return (pData->compare(_Right)) >= 0;
+	};
 
 protected:
 	//
