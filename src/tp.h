@@ -38,4 +38,4 @@ namespace NTemplate {
 	};
 #pragma endregion
 }
-#endif  // JSP_H_
+#endif  // TP_H_
