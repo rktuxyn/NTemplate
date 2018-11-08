@@ -1,7 +1,7 @@
 # NTemplate
 Native Template Parser Addon for Node.js
 
-<b>Example:
+<b>Example</b>:
 ```js
 var tparser = require( './release/ntemplate' );
 
