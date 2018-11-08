@@ -1,0 +1,22 @@
+#include \template\tm.master
+<placeholder id="body">
+<js::
+	var p = 0;
+	var x = 0;
+	var n = 0;
+	var z = 0;
+	var y = 0;
+::js>
+
+<js:: for (var x = 0; x < 100; x++){ ::js>
+	<h1>count <js= x =js></h1>
+<js::}::js>
+
+	<h1>Hello World body ! </h1>
+	<h1>Hello World body ! </h1>
+	<h1>Hello World body ! </h1>
+	<h1>Hello World body ! </h1>
+	<h1>Hello World body ! </h1>
+	 <placeholder id="nbmbody">
+	 </placeholder>
+</placeholder>

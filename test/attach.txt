@@ -1,0 +1,30 @@
+<h1>Attachment</h1>
+<table>
+<tbody>
+<js:: for(let k = 0; k<10; k++) { ::js>
+	<tr>
+		<js:: for(let nx =0; nx < 10; nx++) { ::js>
+			<td>
+				<js= (Math.floor(( 1 + Math.random() ) * 0x10000000 ).toString( 16 )) =js>
+			</td>
+		<js:: } ::js>
+	</tr>
+<js:: } ::js>
+</tbody>
+</table>
+<h1>Attachment</h1>
+
+<js::
+	var px = "";
+	let datas = [];
+	let rowArr = ['A', 'B', 'C',  'D', 'E', 'F', 'G'];
+	
+	for(let x =0; x<100; x++){
+		let row={};
+		for(let n = 0; n < rowArr.length; n++){
+			row[rowArr[n]] = rowArr[n] + (Math.floor(( 1 + Math.random() ) * 0x10000000 ).toString( 16 ));
+		}
+		datas.push(row);
+	}
+::js>
+

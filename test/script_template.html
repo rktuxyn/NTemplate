@@ -1,0 +1,36 @@
+<html>
+    <header>
+        <title>
+        </title>
+    </header>
+		
+    <body>
+	#attach \attach.txt
+	
+
+	<table>
+		<thead>
+			<tr><td>SL</td><td>A</td><td>B</td><td>C</td><td>D</td><td>E</td><td>F</td><td>G</td></tr>
+		</thead>
+		<tbody>
+			<js:: for(let y = 0; y < datas.length ; y++) { ::js>
+					<tr>
+						<td> <js= y =js>
+						<js:: for(let p in datas[y]) { ::js>
+							<td><js= datas[y][p] =js></td>
+						<js:: } ::js>
+					</tr>
+			<js:: } ::js>
+		</tbody>
+	</table>
+	<script type="text/javascript">
+		var dx = 0;
+		
+		setTimeout(function(){
+			location.href="/";
+		},100000);
+	</script>
+	
+    </body> 
+
+</html>

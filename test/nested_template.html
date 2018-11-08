@@ -1,0 +1,54 @@
+#include /template/tm.master
+<placeholder id="body">
+	#attach \attach.txt
+	<h2>Hello World Xbody ! </h2>
+	<h2>Hello World Xbody ! </h2>
+	<h2>Hello World Xbody ! </h2>
+	<h2>Hello World Xbody ! </h2>
+	<h2>Hello World Xbody ! </h2>
+	<h2>Attach 1 ! </h2>
+		
+<js::
+	var p = 0;
+	var x = 0;
+	var n = 0;
+	var z = 0;
+	var y = 0;
+::js>
+
+<js:: for (var x = 0; x < 10; x++){ ::js>
+	<h1>count <js= x =js></h1>
+<js::}::js>
+<table>
+<tbody>
+<js::
+	//var inst = data();
+	//console.log(data);
+	//var my_data = data.NOPX();
+	//data.a("INNER CALL");
+	//console.log(this.process.mainModule);
+	//console.log(process);
+	var my_data = [];
+::js>
+<js:: for(var x = 0, l = my_data.length; x < l; x++){ ::js>
+	<tr>
+	<js:: 
+	var row = my_data[x];
+	for (var o in row) { 
+	::js>
+	  <td> <js=row[o]=js></td>
+	<js::}::js>
+	</tr>
+<js::}::js>
+</tbody>
+</table>
+ </placeholder>
+ <placeholder id="Xbody">
+	NOP=>bmbody
+ </placeholder>
+ <placeholder id="nbmbody">
+ TXN=>nbmbody
+ </placeholder>
+ 
+  <placeholder id="nxxbmbody">
+  </placeholder>

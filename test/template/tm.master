@@ -1,0 +1,37 @@
+<html>
+    <header>
+        <title>
+        </title>
+    </header>
+		
+    <body>
+
+        <placeholder id="body">
+        </placeholder>
+        <placeholder id="Xbody">
+        </placeholder>
+
+<js:: for (var x = 0; x < 100; x++){ ::js>
+	<h1>count <js= x =js></h1>
+<js::}::js>
+    </body> 
+
+	<script>
+	function ReqNode(max, method){
+		
+		for(let x = 0; x < max; x ++){
+			var xhr = new window.XMLHttpRequest();
+			xhr.open( "GET", 'http://127.0.0.1:1337', true );
+			xhr.responseType = method;
+			xhr.onload = function () {
+				console.log(x);
+			};
+			xhr.send( JSON.stringify({}));
+		}
+}
+setTimeout(function(){
+	//location.href="/";
+},10);
+
+	</script>
+</html>
