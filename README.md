@@ -1,5 +1,5 @@
 # NTemplate
-Native Template Parser Addon for Node.js
+Nested Template Parser for Node.js (Populate data and add multiple attachment and template in single page)
 
 <b>Example</b>:
 ```js
