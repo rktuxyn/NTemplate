@@ -1,3 +1,9 @@
+/**
+* Copyright (c) 2018, SOW (https://www.safeonline.world). (https://github.com/RKTUXYN) All rights reserved.
+* @author {SOW}
+* Copyrights licensed under the New BSD License.
+* See the accompanying LICENSE file for terms.
+*/
 #include "narg.h"
 using namespace NTemplate;
 void NTemplate::GetSettings(v8::Isolate * isolate, const v8::FunctionCallbackInfo<v8::Value>& args, Settings * settingsObj, bool isAsyncReq) {
@@ -10,18 +16,18 @@ void NTemplate::GetSettings(v8::Isolate * isolate, const v8::FunctionCallbackInf
 			settingsObj->isObject = false;
 			if (!args[0]->IsString()) {
 				settingsObj->isError = true;
-				settingsObj->errorMsg = stringx("String Required!!! (APP DIRECTORY PATH) :(");
+				settingsObj->errorMsg = "String Required!!! (APP DIRECTORY PATH) :(";
 				return;
 			}
 			if (!args[1]->IsString()) {
 				settingsObj->isError = true;
-				settingsObj->errorMsg = stringx("String Required!!! (APP Path PATH) :(");
+				settingsObj->errorMsg = "String Required!!! (APP Path PATH) :(";
 				return; //return settingsObj;
 			}
 			v8::String::Utf8Value pp(isolate, args[1]);
 			v8::String::Utf8Value dr(isolate, args[0]);
-			settingsObj->pagePath = stringx(T_CHAR(pp));
-			settingsObj->dir = stringx(T_CHAR(dr));
+			settingsObj->pagePath = T_CHAR(pp);
+			settingsObj->dir = T_CHAR(dr);
 			if (!args[2]->IsUndefined() && args[3]->IsNull()) {
 				settingsObj->data = args[2];
 			}
@@ -57,7 +63,7 @@ void NTemplate::GetSettings(v8::Isolate * isolate, const v8::FunctionCallbackInf
 		else {
 			if (!args[0]->IsObject()) {
 				settingsObj->isError = true;
-				settingsObj->errorMsg = stringx("Setting Object Required!!! :(");
+				settingsObj->errorMsg = "Setting Object Required!!! :(";
 				return;
 			}
 			settingsObj->isObject = true;
@@ -66,27 +72,27 @@ void NTemplate::GetSettings(v8::Isolate * isolate, const v8::FunctionCallbackInf
 			val = settings->Get(v8::String::NewFromUtf8(isolate, "page_path"));
 			if (val->IsNullOrUndefined() || !val->IsString()) {
 				settingsObj->isError = true;
-				settingsObj->errorMsg = stringx("String Required!!! (PAGE_PATH) NO POPERTY :(");
+				settingsObj->errorMsg = "String Required!!! (PAGE_PATH) NO POPERTY :(";
 				return;
 			}
-			settingsObj->pagePath = stringx(T_CHAR(v8::String::Utf8Value(isolate, val)));
+			settingsObj->pagePath = T_CHAR(v8::String::Utf8Value(isolate, val));
 			val.Clear();
-			if (settingsObj->pagePath->empty()) {
+			if (settingsObj->pagePath.empty()) {
 				settingsObj->isError = true;
-				settingsObj->errorMsg = stringx("String Required!!! (PAGE_PATH):(");
+				settingsObj->errorMsg = "String Required!!! (PAGE_PATH):(";
 				return;
 			}
 			val = settings->Get(v8::String::NewFromUtf8(isolate, "root_dir"));
 			if (val->IsNullOrUndefined() || !val->IsString()) {
 				settingsObj->isError = true;
-				settingsObj->errorMsg = stringx("String Required!!! (APP DIRECTORY PATH) NO POPERTY :(");
+				settingsObj->errorMsg = "String Required!!! (APP DIRECTORY PATH) NO POPERTY :(";
 				return;
 			}
-			settingsObj->dir = stringx(T_CHAR(v8::String::Utf8Value(isolate, val)));
+			settingsObj->dir = T_CHAR(v8::String::Utf8Value(isolate, val));
 			val.Clear();
-			if (settingsObj->dir->empty()) {
+			if (settingsObj->dir.empty()) {
 				settingsObj->isError = true;
-				settingsObj->errorMsg = stringx("String Required!!! (APP DIRECTORY PATH) :(");
+				settingsObj->errorMsg = "String Required!!! (APP DIRECTORY PATH) :(";
 				return; //return settingsObj;
 			}
 			{
@@ -148,13 +154,13 @@ void NTemplate::GetSettings(v8::Isolate * isolate, const v8::FunctionCallbackInf
 			if (cb->IsNullOrUndefined()) {
 				//settingsObj->Clear();
 				settingsObj->isError = true;
-				settingsObj->errorMsg = stringx("Callback Required!!! For Completing async request :(");
+				settingsObj->errorMsg = "Callback Required!!! For Completing async request :(";
 				return; //return settingsObj;
 			}
 			if (!cb->IsFunction()) {
 				//settingsObj->Clear();
 				settingsObj->isError = true;
-				settingsObj->errorMsg = stringx("Invalid argument defined instead of function (Callback) !!! :(");
+				settingsObj->errorMsg = "Invalid argument defined instead of function (Callback) !!! :(";
 				return;
 			}
 		}
@@ -163,7 +169,7 @@ void NTemplate::GetSettings(v8::Isolate * isolate, const v8::FunctionCallbackInf
 	} catch (std::exception& e) {
 		//std:: cout << e.what() << "\n";
 		settingsObj->isError = true;
-		settingsObj->errorMsg = stringx(e.what());
+		settingsObj->errorMsg = e.what();
 	}
 #endif
 	return;
@@ -172,6 +178,6 @@ void NTemplate::GetSettings(v8::Isolate * isolate, const v8::FunctionCallbackInf
 void NTemplate::Settings::Clear() {
 	if (!data->IsNull()) data.Clear();
 	if (!callback.IsEmpty()) callback.Reset();
-	errorMsg.dispose();
-	dir.dispose();
+	errorMsg.clear();
+	dir.clear();
 };

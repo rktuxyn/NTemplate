@@ -1,3 +1,9 @@
+/**
+* Copyright (c) 2018, SOW (https://www.safeonline.world). (https://github.com/RKTUXYN) All rights reserved.
+* @author {SOW}
+* Copyrights licensed under the New BSD License.
+* See the accompanying LICENSE file for terms.
+*/
 #pragma once
 #ifndef NTEMPLATE_ARG_
 #define NTEMPLATE_ARG_
@@ -19,15 +25,15 @@
 namespace NTemplate {
 	struct Settings {
 		v8::Local<v8::Value> data;
-		stringx pagePath;
-		stringx dir;
+		std::string pagePath;
+		std::string dir;
 		bool isAsync;
 		bool isObject;
 		bool removeNewLine;
 		bool isStrict;
 		v8::Persistent<v8::Function> callback;
 		bool isError;
-		stringx errorMsg;
+		std::string errorMsg;
 		void Clear();
 
 	};

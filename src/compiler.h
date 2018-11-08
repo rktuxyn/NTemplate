@@ -35,7 +35,7 @@ namespace NTemplate {
 		* Params @ [Script Source@String, Inner Function@String, Callback@Function]
 		*/
 		void ParseRawScript(const v8::FunctionCallbackInfo<v8::Value>& args);
-		v8::Local<v8::Value> RunTemplateScript(v8::Isolate* isolate, stringx& source, v8::Local<v8::Value> innerArg, bool isAsync = false);
+		v8::Local<v8::Value> RunTemplateScript(v8::Isolate* isolate, std::string& source, v8::Local<v8::Value> innerArg, bool isAsync = false);
 #define RUN_SCRIPT NTemplate::Compiler::RunScript
 	}
 }
