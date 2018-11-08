@@ -3,14 +3,14 @@
     {
       "target_name": "NTemplate",
       "sources": [
-		"src/narg.cpp",
-		"src/compiler.cpp",
-		"src/tr.cpp",
-		"src/jsp.cpp",
-		"src/tp.cpp",
-		"src/async.cpp",
-		"src/core.cpp",
-		"ntemplate.cc"
+	"src/narg.cpp",
+	"src/compiler.cpp",
+	"src/tr.cpp",
+	"src/jsp.cpp",
+	"src/tp.cpp",
+	"src/async.cpp",
+	"src/core.cpp",
+	"ntemplate.cc"
       ],
 	  "msvs_settings": {
         "VCCLCompilerTool": {
@@ -23,8 +23,8 @@
 	 "conditions": [
         ["OS=='win'", {
           "defines": [
-            "_HAS_EXCEPTIONS=1",
-			"_WRITE_OUTPUT=0"
+		"_HAS_EXCEPTIONS=1",
+		"_WRITE_OUTPUT=0"
           ]
         }]
       ]
