@@ -1,7 +1,7 @@
 {
   "targets": [
     {
-      "target_name": "NTemplate",
+      "target_name": "ntemplate",
       "sources": [
 		"src/narg.cpp",
 		"src/compiler.cpp",
@@ -23,8 +23,8 @@
 	 "conditions": [
         ["OS=='win'", {
           "defines": [
-		"_HAS_EXCEPTIONS=1",
-		"_WRITE_OUTPUT=0"
+		"_HAS_EXCEPTIONS 1",
+		"_TEST_RUNTIME 0"
           ]
         }]
       ]
