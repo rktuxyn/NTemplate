@@ -34,6 +34,7 @@ NTemplate::ProcessCallback(v8::Isolate* isolate, TemplateResult * rsinf, Setting
 	rsp.Clear(); arg->Clear();
 	return;
 };
+
 void NTemplate::ParseInternal(const v8::FunctionCallbackInfo<v8::Value>& args) {
 
 	v8::Isolate* isolate = v8::Isolate::GetCurrent();
@@ -55,7 +56,7 @@ void NTemplate::ParseInternal(const v8::FunctionCallbackInfo<v8::Value>& args) {
 		NTemplate::Async::DoAsyncTask(isolate, settings);
 		args.GetReturnValue().Set(v8::String::NewFromUtf8(isolate, "START ASYNC"));
 		//Will be Dispose While Thread Exited!!!
-		isolate = NULL;
+		//isolate = NULL;
 		return;
 #endif //!_M_CEE
 
@@ -89,6 +90,9 @@ void NTemplate::ParseInternal(const v8::FunctionCallbackInfo<v8::Value>& args) {
 		args.GetReturnValue().Set(v8::String::NewFromUtf8(isolate, rsinf->t_source.c_str()));
 		return;
 	}
+#if _TEST_RUNTIME
+	NTemplate::WriteFile("function ___NTEMPLATE__SCRIPT__RUNNER (data){ try{\r\n" + rsinf->t_source + "\r\n}catch(e){\r\nreturn e.message;\r\n}\r\n};");
+#endif
 	if (settings->isObject) {
 		if (!settings->callback.IsEmpty()) {
 			ProcessCallback(isolate, rsinf, settings,
@@ -115,18 +119,6 @@ void NTemplate::ParseInternal(const v8::FunctionCallbackInfo<v8::Value>& args) {
 	return;
 
 };
-#if _WRITE_OUTPUT
-#include <fstream>
-void WriteFile(std::string str) {
-	std::ofstream outputFile;
-	outputFile.open(".\\temp\\out.js");
-	outputFile << str;
-	str.clear(); std::string().swap(str);
-	outputFile.close();
-	outputFile.clear();
-	std::ofstream().swap(outputFile);
-};
-#endif
 void
 NTemplate::Parse(const v8::FunctionCallbackInfo<v8::Value>& args) {
 

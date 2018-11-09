@@ -54,7 +54,6 @@ char* TemplateReader::ReadFile(const char*& name) {
 		stream = NULL;
 #if _HAS_EXCEPTIONS
 	} catch (std::exception& e) {
-		//std::cout << e.what() << "\n";
 		chars = "INVALID";
 		this->result->is_error = true;
 		this->result->err_msg = e.what();
@@ -113,7 +112,9 @@ void TemplateReader::DeepRead(std::string &_path, std::string &data) {
 };
 void TemplateReader::Read(std::string& path) {
 	std::string& relativePath = this->_rootDir + "\\" + path;
+#if _TEST_RUNTIME
 	std::cout << "Reading==>" << relativePath << "\r\n";
+#endif
 	const char* absolutepath = relativePath.c_str();
 	char* result = this->ReadFile(absolutepath);
 	if (result == "INVALID") {
@@ -121,14 +122,14 @@ void TemplateReader::Read(std::string& path) {
 		this->result->err_msg = this->result->err_msg + "Parent Template =>" + path + " not found. Chield Template =>" + this->_parent + ".";
 		return;
 	}
-	//relativePath.clear();
-	std::string str = std::string(result); //reinterpret_cast<std::string&>(result);//static_cast<std::string>(result);
+	std::string str(result); delete result;
 	this->Add(std::regex_replace(str, this->patternRegx, ""));
-	delete result; //delete absolutepath;
 	std::string nextTemplate = REGEX_MATCH_STR(str, this->patternRegx);
 	str.clear();
 	if (nextTemplate.empty() || nextTemplate == "INVALID") {
+#if _TEST_RUNTIME
 		std::cout << "Reading==>" << "Go Back" << "\r\n";
+#endif
 		return;
 	}
 	this->_parent = path;

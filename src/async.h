@@ -29,25 +29,15 @@ namespace NTemplate {
 	namespace Async {
 		struct ThreadContext {
 			Settings*							settings;
-			TemplateResult*						result;
 			uv_async_t*							asyncRequest;
 			uv_work_t*							work_t;
 		};
-		struct ThreadSContext {
-			Settings*							settings;
-			TemplateResult*						rsinf;
-			uv_work_t*							work_t;
-		};
-		inline void FinalizationTask(ThreadContext *context, TemplateResult* rsinf, bool canRun = false);
 		inline void ParseTemplate(ThreadContext *context, TemplateResult* rsinf);
-		inline void ParseTemplate(ThreadSContext *context);
 		inline void StartAsync(uv_async_t *handle);
-		inline void FinalizationTask(ThreadSContext *context, bool canRun = false);
-		inline void Runner(uv_work_t *req);
-		inline void RunDone(uv_work_t *req, int status);
-		inline int __DoAsyncTask(v8::Isolate* isolate, Settings* settings);
+		inline void FinalizationTask(ThreadContext *context, TemplateResult* rsinf, bool canRun = false);
 		int DoAsyncTask(v8::Isolate* isolate, Settings* settings);
-		inline void Runx(const v8::FunctionCallbackInfo<v8::Value>& args);
+		void Run(const v8::FunctionCallbackInfo<v8::Value>& args);
+#define RUN_ASYNC NTemplate::Async::Run
 	}
 #endif //!_M_CEE
 }//!NTemplate

@@ -31,7 +31,20 @@
 #ifndef STD_EXTEND_REGEX
 #include "stder.h"
 #endif // !STD_EXTEND_REGEX
+#ifndef _TEST_RUNTIME
+#define _TEST_RUNTIME 0
+#endif // !_WRITE_OUTPUT
 #undef _M_CEE //REMOVE_IT
+#if _TEST_RUNTIME
+#ifndef _FSTREAM_
+#include <fstream>
+#endif
+#endif // _TEST_RUNTIME
+#ifdef _STR_FRMT
+#ifndef _INC_STDARG
+#include<stdarg.h>
+#endif // !_INC_STDARG
+#endif // _STR_FRMT
 
 namespace NTemplate {
 #ifndef  T_CHAR
@@ -42,8 +55,22 @@ namespace NTemplate {
 		return *value ? *value : "<string conversion failed>";
 	};
 #endif // ! T_CHAR
-	#include<stdarg.h>
+	static void WriteFile(std::string str) {
+#if _TEST_RUNTIME
+		std::ofstream outputFile;
+		outputFile.open(".\\temp\\out.js");
+		outputFile << str;
+		str.clear(); std::string().swap(str);
+		outputFile.close();
+		outputFile.clear();
+		std::ofstream().swap(outputFile);
+#else
+		throw new std::exception("Not supported");
+#endif
+	};
+	
 	static std::string xformat(const char *fmt, ...) {
+#if _STR_FRMT
 		va_list args;
 		va_start(args, fmt);
 		std::string str("");
@@ -59,6 +86,9 @@ namespace NTemplate {
 		}
 		va_end(args);
 		return str;
+#else
+		throw new std::exception("Not supported");
+#endif
 	};
 	struct TemplateResult {
 		std::string t_source;

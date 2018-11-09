@@ -12,7 +12,7 @@ using namespace NTemplate;
 /***
 * [JAVASCRIPT PARSER IMPLEMENT]
 ***/
-JavaScriptParser::~JavaScriptParser() {};
+JavaScriptParser::~JavaScriptParser() { };
 
 JavaScriptParser::JavaScriptParser() {
 	Tag *tags = new Tag();
@@ -108,7 +108,9 @@ void JavaScriptParser::endTag(std::regex regx, JavaScriptParser::Result* info) {
 	return;
 };
 void JavaScriptParser::ParseScript() {
-	std::cout << "I'm here" << "\r\n";
+#if _TEST_RUNTIME
+	std::cout << "Start JavaScriptParser::ParseScript" << "\r\n";
+#endif
 	JavaScriptParser::Result* info = new JavaScriptParser::Result();
 	std::string out = "/** ** [START CLIENT SCRIPT]** **/\r\n/** ** [START STRIPE-1]** **/ \r\n";
 	out.append("var " + this->resultKey + "='';\r\n");
@@ -157,6 +159,9 @@ void JavaScriptParser::ParseScript() {
 	this->result->t_source.clear();
 	this->result->t_source = std::string(out);
 	out.clear();
+#if _TEST_RUNTIME
+	std::cout << "End JavaScriptParser::ParseScript" << "\r\n";
+#endif
 	return;
 };
 /***

@@ -22,7 +22,7 @@ void NTemplate::GetSettings(v8::Isolate * isolate, const v8::FunctionCallbackInf
 			if (!args[1]->IsString()) {
 				settingsObj->isError = true;
 				settingsObj->errorMsg = "String Required!!! (APP Path PATH) :(";
-				return; //return settingsObj;
+				return; 
 			}
 			v8::String::Utf8Value pp(isolate, args[1]);
 			v8::String::Utf8Value dr(isolate, args[0]);
@@ -63,7 +63,7 @@ void NTemplate::GetSettings(v8::Isolate * isolate, const v8::FunctionCallbackInf
 		else {
 			if (!args[0]->IsObject()) {
 				settingsObj->isError = true;
-				settingsObj->errorMsg = "Setting Object Required!!! :(";
+				settingsObj->errorMsg = "Settings Object Required!!! :(";
 				return;
 			}
 			settingsObj->isObject = true;
@@ -152,13 +152,11 @@ void NTemplate::GetSettings(v8::Isolate * isolate, const v8::FunctionCallbackInf
 		}
 		if (isAsyncReq || settingsObj->isAsync) {
 			if (cb->IsNullOrUndefined()) {
-				//settingsObj->Clear();
 				settingsObj->isError = true;
 				settingsObj->errorMsg = "Callback Required!!! For Completing async request :(";
-				return; //return settingsObj;
+				return; 
 			}
 			if (!cb->IsFunction()) {
-				//settingsObj->Clear();
 				settingsObj->isError = true;
 				settingsObj->errorMsg = "Invalid argument defined instead of function (Callback) !!! :(";
 				return;

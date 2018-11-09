@@ -73,7 +73,9 @@ v8::Local<v8::Value> NTemplate::Compiler::ParseScript(v8::Isolate * isolate, v8:
 #if _HAS_EXCEPTIONS
 	try {
 #endif	
-		std::cout << "Start ParseScript..." << "\r\n";
+#if _TEST_RUNTIME
+		std::cout << "NTemplate::Compiler::ParseScript..." << "\r\n";
+#endif
 		v8::Isolate::Scope isolate_scope(isolate);
 		v8::Local<v8::Context> context = isolate->GetCurrentContext();
 		v8::Context::Scope context_scope(context);
@@ -81,7 +83,9 @@ v8::Local<v8::Value> NTemplate::Compiler::ParseScript(v8::Isolate * isolate, v8:
 		/**[Run Script With Context]*/
 		//v8::Script::Compile(context, source).ToLocalChecked()->Run(context);
 		v8:: Script::Compile(source)->Run(context);
-		std::cout << "Script Compile Completed..." << "\r\n";
+#if _TEST_RUNTIME
+		std::cout << "NTemplate::Compiler::ParseScript-->Script Compile Completed..." << "\r\n";
+#endif
 		v8::Local<v8::Object> jsGlobal = context->Global();
 		v8::Local<v8::Function> jsUpdateFunc = v8::Handle<v8::Function>::Cast(jsGlobal->Get(innerFunc));
 		if (jsUpdateFunc->IsUndefined() || jsUpdateFunc->IsNull()) {

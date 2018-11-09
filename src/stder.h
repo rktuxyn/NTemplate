@@ -248,25 +248,14 @@ namespace std {
 	}
 #define STR_TRIM _trim
 	/**=================================================*/
-	template<class DataRefStr>
-	std::string
-		_trim_n(DataRefStr str) {
-		if (str->empty())return str;
-		size_t first = str->find_first_not_of(' ');
-		size_t last = str->find_last_not_of(' ');
-		return str->substr(first, (last - first + 1));
-	}
-#define STR_TRIM_N _trim_n
-	/**=================================================*/
 	template<class Traits,
 		class CharT>
-		std::map<int, std::string>
-		_map_split(std::basic_string<CharT>& str,
+		void
+		_map_split(std::map<int, std::string>&result, std::basic_string<CharT>& str,
 			const std::basic_regex<CharT, Traits>& rgx
 		) {
-		std::map<int, std::string> result;
 		{
-			if (str.empty())return result;
+			if (str.empty())return;
 			int count = 0;
 			std::sregex_token_iterator iter(str.begin(), str.end(), rgx, -1);
 			for (std::sregex_token_iterator end; iter != end; ++iter) {
@@ -274,7 +263,7 @@ namespace std {
 				count++;
 			}
 		}
-		return result;
+		return;
 	};
 #define STR_MAP_SPLIT _map_split
 	/**=====================================================*/

@@ -35,7 +35,9 @@ void TemplateParser::getMatchList(std::list<std::string>&ml, std::string& str, s
 	try {
 #endif
 		REGEX_MATCH_LIST(ml, str, rgx);
+#if _TEST_RUNTIME
 		std::cout << "I'm passed from getMatchList." << "\r\n";
+#endif
 #if _HAS_EXCEPTIONS
 	} catch (std::regex_error& e) {
 		this->result->is_error = true;
@@ -53,7 +55,6 @@ void TemplateParser::getSetTemplate(std::string str, v8::Isolate* isolate) {
 };
 void TemplateParser::extendPlaceholder(std::map<std::string, std::string>&extendId, std::map<int, std::string>&match) {
 	std::string key;
-	//std::regex re = std::regex(this->regx);
 	for (auto itr = match.begin(); itr != match.end(); itr++) {
 		key = REGEX_MATCH_STR(itr->second, this->regx);
 		if (key == "INVALID" || key.empty()) {
@@ -67,7 +68,9 @@ void TemplateParser::overlapTemplate(std::list<std::string> ml, std::string& bod
 #if _HAS_EXCEPTIONS
 	try {
 #endif
+#if _TEST_RUNTIME
 		std::cout << "Start overlapTemplate" << "\r\n";
+#endif
 		std::map<std::string, std::string> extendId;
 		extendId["__DEMO__"] = "__DEMO__";
 		body = std::regex_replace(body, std::regex("(?:\\r\\n)"), this->repStr);//Make Single Line
@@ -77,7 +80,7 @@ void TemplateParser::overlapTemplate(std::list<std::string> ml, std::string& bod
 		std::map<int, std::string>::iterator matchIt;
 		std::string first;//!TODO
 		std::map<int, std::string> match;
-		for (std::list<std::string>::iterator s = ml.begin(); s != ml.end(); ++s) {
+		for (auto s = ml.begin(); s != ml.end(); ++s) {
 			sk = *s;
 			if (sk.empty())continue;
 
@@ -101,8 +104,7 @@ void TemplateParser::overlapTemplate(std::list<std::string> ml, std::string& bod
 			}
 			if (p.empty())continue;
 			p = STR_TRIM(p);
-
-			match = STR_MAP_SPLIT(p, this->endTagRegx);
+			STR_MAP_SPLIT(match, p, this->endTagRegx);
 			first = "";
 			if (!match.empty()) {
 
@@ -113,8 +115,10 @@ void TemplateParser::overlapTemplate(std::list<std::string> ml, std::string& bod
 				}
 				if (first == "" || first.empty()) {
 					this->result->t_source = std::regex_replace(this->result->t_source, std::regex(sk), p);
+					match.clear();
 					continue;
 				}
+				match.clear();
 			}
 			if (first == "") {
 				p = STR_SPLIT(first, this->endTag);
@@ -131,6 +135,9 @@ void TemplateParser::overlapTemplate(std::list<std::string> ml, std::string& bod
 		}
 		sk.clear(); brgx.clear(); p.clear(); first.clear();
 		ml.clear(); body.clear(); extendId.clear();
+#if _TEST_RUNTIME
+		std::cout << "I'm passed from overlapTemplate." << "\r\n";
+#endif
 		return;
 #if _HAS_EXCEPTIONS
 	} catch (std::exception& e) {
@@ -166,7 +173,9 @@ void TemplateParser::margeTemplate() {
 			}
 		}
 		this->result->t_source = std::regex_replace(this->result->t_source, this->endTagRegx, "");
+#if _TEST_RUNTIME
 		std::cout << "I'm passed from margeTemplate." << "\r\n";
+#endif
 #if _HAS_EXCEPTIONS
 	} catch (std::exception& e) {
 		this->result->err_msg = e.what();
@@ -180,11 +189,14 @@ void TemplateParser::implimantAttachment() {
 	std::list<std::string> rml;
 	this->getMatchList(rml, this->result->t_source, this->attachRegx);
 	if (rml.size() > 0) {
+#if _TEST_RUNTIME
 		std::cout << "Start implimantAttachment." << "\r\n";
-		//const char* cresult;
+#endif
 		for (auto s = rml.begin(); s != rml.end(); ++s) {
 			std::string itr = *s;
+#if _TEST_RUNTIME
 			std::cout << itr << "\r\n";
+#endif
 			std::string path = std::regex_replace(itr, std::regex("#attach "), "");
 			std::string relativePath = this->root_dir + "\\" + path;
 			const char* dir = relativePath.c_str();
@@ -197,27 +209,35 @@ void TemplateParser::implimantAttachment() {
 			this->result->t_source = std::regex_replace(this->result->t_source, std::regex("#attach \\" + path), std::string(cresult));
 			delete cresult;
 		}
-		//
 	}
+#if _TEST_RUNTIME
 	std::cout << "I'm passed from implimantAttachment." << "\r\n";
+#endif
 	return;
-}
+};
 void TemplateParser::nonImplementPlaceholder() {
-	/**std::list<std::string> rml = this->getMatchList(this->outStr, this->regx);
+#if _TEST_RUNTIME
+	std::cout << "I'm passed from nonImplementPlaceholder." << "\r\n";
+#else
+	std::list<std::string> rml;
+	this->getMatchList(rml, this->result->t_source, this->regx);
 	std::string requiredPlaceholder("__NOP__");
 	if (rml.size() > 0) {
 		requiredPlaceholder = "This following Placeholder were missing to implimant in child:\r\n";
 		for (std::list<std::string>::iterator s = rml.begin(); s != rml.end(); ++s) {
 			requiredPlaceholder.append(*s + "\r\n");
 		}
-		std::cout << requiredPlaceholder << "\r\n";
+		this->result->is_error = true;
+		this->result->err_msg = requiredPlaceholder;
 	};
-	std::list<std::string>().swap(rml);*/
-	//return requiredPlaceholder;
-	std::cout << "I'm passed from nonImplementPlaceholder." << "\r\n";
+	std::list<std::string>().swap(rml);
+#endif
 	return;
 };
 void TemplateParser::Start() {
+#if _TEST_RUNTIME
+	std::cout << "TemplateParser::Start..." << "\r\n";
+#endif
 	this->result->is_error = false;
 	this->result->t_source = "Working!!!";
 	char* rresult = this->ReadFile(this->view_path);
@@ -233,15 +253,15 @@ void TemplateParser::Start() {
 		if (this->result->is_error) return;
 		this->margeTemplate();
 		if (this->result->is_error) return;
-		this->nonImplementPlaceholder();
-		if (this->result->is_error) return;
+		if (this->result->is_strict) {
+			this->nonImplementPlaceholder();
+			if (this->result->is_error) return;
+		}
 		this->implimantAttachment();
 		if (this->result->is_error) return;
 		if (REGEX_IS_MATCH(this->result->t_source, this->regxSts) == 0) {
-			if (REGEX_IS_MATCH(this->result->t_source, this->regxRts) == 0) {
-				this->result->is_script = false;
-				return;
-			}
+			this->result->is_script = false;
+			return;
 		}
 		this->result->is_script = true;
 		this->result->is_script_template = true;
