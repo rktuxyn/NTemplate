@@ -1,4 +1,4 @@
-var tparser = require( './release/ntemplate' );
+var tparser = require( './build/release/ntemplate' );
 
 var html = undefined;
 
@@ -11,11 +11,11 @@ html = tparser.parse( __dirname, __dirname + "\\test\\nested_template.html.html"
 console.log( html );
 
 html = tparser.parse( __dirname, __dirname + "\\test\\script_template.html.html", this );
-console.log( html  );
+console.log( html );
 
 for ( let i = 0; i < 10000; i++ ) {
     let _html = tparser.parse( __dirname, __dirname + "\\test\\nested_template.html" );
-    console.log( _html);
+    console.log( _html );
 };
 
 let settings = {
@@ -25,40 +25,43 @@ let settings = {
     isAsync: "boolean [true/false]",
     callback: function ( rsp ) { }
 };
-/**resp = {
+resp = {
     is_error: false,
     err_msg: "NOPE",
     result: "HTML RESULT HERE!!!"
-};*/
-tparser.parseo( {
-    root_dir: __dirname,
-    page_path: __dirname + "\\test\\index.html",
-    data: this,
-    isAsync: true,
-    callback: function ( rsp ) {
-        if ( rsp.is_error ) {
-            console.log( rsp.err_msg );
-        } else {
-            console.log( rsp.result );
+};
+
+let example = async () =>{
+    let resp = await tparser.parseo( {
+        root_dir: __dirname,
+        page_path: __dirname + "\\test\\script_template.html",
+        data: this,
+        isAsync: true,
+        callback: function ( rsp ) {
+            if ( rsp.is_error ) {
+                console.log( rsp.err_msg );
+            } else {
+                console.log( rsp.result.length );
+            }
         }
+    } );
+    console.log( resp );
+    for ( let x = 0; x < 100; x++ ) {
+        let copy = x;
+        await tparser.async( {
+            root_dir: __dirname,
+            page_path: __dirname + "\\test\\script_template.html",
+            data: this,
+            callback: function ( rsp ) {
+                console.log( copy );
+                if ( rsp.is_error ) {
+                    console.log( rsp.err_msg );
+                } else {
+                    console.log( rsp.result.length );
+                }
+            }
+        } );
     }
-} );
-tparser.parseo( {
-    root_dir: __dirname,
-    page_path: __dirname + "\\test\\nested_template.html",
-    data: this,
-    isAsync: false,
-    callback: function ( rsp ) {
-        if ( rsp.is_error ) {
-            console.log( rsp.err_msg );
-        } else {
-            console.log( rsp.result );
-        }
-    }
-} );
-let resp = tparser.parseo( {
-    root_dir: __dirname,
-    page_path: __dirname + "\\test\\nested_template.html",
-    data: this,
-    isAsync: false
-} );
+
+};
+example();
