@@ -1,7 +1,7 @@
 # NTemplate
 Nested Template Parser for Node.js (Populate data and add multiple attachment and template in single page)
 
-<b>Example</b>:
+<b>Example</b>:<br/>
 <b>#Add library:</b>
 ```js
 var tparser = require( './build/release/ntemplate' );
