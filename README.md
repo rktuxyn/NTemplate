@@ -2,33 +2,33 @@
 Nested Template Parser for Node.js (Populate data and add multiple attachment and template in single page)
 
 <b>Example</b>:
-Add library:
+<b>#Add library:</b>
 ```js
 var tparser = require( './build/release/ntemplate' );
 ```
-Run Javascript:
+<b>#Run Javascript:</b>
 ```js
 tparser.runScript( `for(let p=0; p<10; p++)console.log('Script is running...' + p)` );
 ```
-#Parse & Run Nested Template without async
+<b>#Parse & Run Nested Template without async</b>
 ```js
 var html = tparser.parse( __dirname, __dirname + "\\test\\nested_template.html.html" );
 console.log( html );
 ```
-#Parse & Run Script Template without async
+<b>#Parse & Run Script Template without async</b>
 ```js
 html = tparser.parse( __dirname, __dirname + "\\test\\script_template.html.html", this );
 console.log( html );
 ```
-#Performance Check Nested Template without async
+<b>#Performance Check Nested Template without async</b>
 ```js
 for ( let i = 0; i < 10000; i++ ) {
     let _html = tparser.parse( __dirname, __dirname + "\\test\\nested_template.html" );
     console.log( _html );
 };
 ```
-#Parse Template with data without or with async
-<b>Settings:</b>
+<b>#Parse Template with data without or with async</b><br/>
+<i>Settings:</i>
 ```js
 let settings = {
     root_dir: "SERVER ROOT DIRECTORY",
@@ -38,7 +38,7 @@ let settings = {
     callback: function ( rsp ) { }
 };
 ```
-<b>Response should be:</b>
+<i>Response should be:</i>
 ```js
 resp = {
     is_error: false,
@@ -46,7 +46,7 @@ resp = {
     result: "HTML RESULT HERE!!!"
 };
 ```
-<b>Send async request to VM:</b>
+<i>Send async request to VM:</i>
 ```js
 let example = async () =>{
     let resp = await tparser.parseo( {
