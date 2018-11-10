@@ -4,13 +4,17 @@
 * Copyrights licensed under the New BSD License.
 * See the accompanying LICENSE file for terms.
 */
-#ifndef SRC_NODE_H_
-#include <node.h>
-#endif //!SRC_NODE_H_
 #ifndef INCLUDE_V8_H_
 #include <v8.h>
 #endif // !INCLUDE_V8_H_
 #include "src/core.h"
+//Final Build on 8:45 PM 11/6/2018
+#ifdef __EXPORT
+#include "src/exp.h"
+#else
+#ifndef SRC_NODE_H_
+#include <node.h>
+#endif //!SRC_NODE_H_
 #ifdef __cplusplus
 extern "C" {
 #endif//!__cplusplus
@@ -21,9 +25,11 @@ extern "C" {
 #error <thread> is not supported when compiling with /clr or /clr:pure.
 #else
 		NODE_SET_METHOD(target, "parseo", PARSE_INTERNAL);
-#endif //!_M_CEE
+		NODE_SET_METHOD(target, "async", RUN_ASYNC);
+#endif//!_M_CEE
 	}
 	NODE_MODULE(NTemplate, RegisterModule)
 #ifdef __cplusplus
 }
 #endif//!__cplusplus
+#endif//!__EXPORT
