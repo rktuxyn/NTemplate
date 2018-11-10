@@ -115,10 +115,12 @@ void NTemplate::ParseInternal(const v8::FunctionCallbackInfo<v8::Value>& args) {
 		}
 		args.GetReturnValue().Set(NTemplate::Compiler::RunTemplateScript(isolate, rsinf->t_source, args[2]));
 	}
+	
 	settings->Clear();
 	return;
 
 };
+
 void
 NTemplate::Parse(const v8::FunctionCallbackInfo<v8::Value>& args) {
 
@@ -136,9 +138,9 @@ NTemplate::Parse(const v8::FunctionCallbackInfo<v8::Value>& args) {
 		isolate = NULL;
 		return;
 	}
-	v8::String::Utf8Value			utfDirStr(isolate, args[0]);
-	v8::String::Utf8Value			utfPagePathStr(isolate, args[1]);
-	const char* pagePath = T_CHAR(utfPagePathStr);
+	v8::String::Utf8Value				utfDirStr(isolate, args[0]);
+	v8::String::Utf8Value				utfPagePathStr(isolate, args[1]);
+	const char* pagePath				= T_CHAR(utfPagePathStr);
 	std::string							dir(T_CHAR(utfDirStr));
 	try {
 		TemplateResult* rsinf = new TemplateResult();

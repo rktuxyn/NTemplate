@@ -32,7 +32,7 @@
 #include "stder.h"
 #endif // !STD_EXTEND_REGEX
 #ifndef _TEST_RUNTIME
-#define _TEST_RUNTIME 0
+#define _TEST_RUNTIME 0L
 #endif // !_WRITE_OUTPUT
 #undef _M_CEE //REMOVE_IT
 #if _TEST_RUNTIME
@@ -45,6 +45,10 @@
 #include<stdarg.h>
 #endif // !_INC_STDARG
 #endif // _STR_FRMT
+#define __EXPORT_REQ 0L
+#if __EXPORT_REQ
+#define __EXPORT
+#endif
 
 namespace NTemplate {
 #ifndef  T_CHAR

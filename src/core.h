@@ -5,6 +5,7 @@
 * See the accompanying LICENSE file for terms.
 */
 #pragma once
+#define N_CORE_H
 #ifndef NTEMPLATE_DEP_
 #include "dependancy.h"
 #endif //!NTEMPLATE_DEP_
