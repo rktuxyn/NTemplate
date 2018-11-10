@@ -6,28 +6,28 @@ Nested Template Parser for Node.js (Populate data and add multiple attachment an
 ```js
 var tparser = require( './build/release/ntemplate' );
 ```
-<b>#Run Javascript:</b>
+<i>#Run Javascript:</i>
 ```js
 tparser.runScript( `for(let p=0; p<10; p++)console.log('Script is running...' + p)` );
 ```
-<b>#Parse & Run Nested Template without async</b>
+<i>#Parse & Run Nested Template without async</i>
 ```js
 var html = tparser.parse( __dirname, __dirname + "\\test\\nested_template.html.html" );
 console.log( html );
 ```
-<b>#Parse & Run Script Template without async</b>
+<i>#Parse & Run Script Template without async</i>
 ```js
 html = tparser.parse( __dirname, __dirname + "\\test\\script_template.html.html", this );
 console.log( html );
 ```
-<b>#Performance Check Nested Template without async</b>
+<i>#Performance Check Nested Template without async</i>
 ```js
 for ( let i = 0; i < 10000; i++ ) {
     let _html = tparser.parse( __dirname, __dirname + "\\test\\nested_template.html" );
     console.log( _html );
 };
 ```
-<b>#Parse Template with data without or with async</b><br/>
+<i>#Parse Template with data without or with async</i><br/>
 <i>Settings:</i>
 ```js
 let settings = {
